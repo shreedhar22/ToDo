@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ToDo</string>
+
+    <string name="textViewHeader">Codepath ToDo App : @sudhishkr</string>
+    <string name="textViewAddTaskTitle">Add ToDo Task</string>
+    <string name="buttonAddTask">Add</string>
+
+    <string name="buttonEditSave">save</string>
+    <string name="textViewEditTitle">Edit ToDo Task</string>
+
+</resources>
