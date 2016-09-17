@@ -2,8 +2,12 @@ package com.sudhishkr.codepath.todo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,13 +16,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
-    static final int REQUEST_CODE_EditTaskActivity = 1;
+    static final int REQUEST_CODE_AddTaskActivity = 1;
+    static final int REQUEST_CODE_EditTaskActivity = 2;
     static final String BUNDLE_TASK_NAME = "TASK_NAME";
 
     ListView listViewTask;
@@ -28,6 +29,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setLogo(R.mipmap.ic_launcher);
+            actionBar.setDisplayUseLogoEnabled(true);
+        }
 
         db = new DBHandle(this);
 
@@ -54,38 +62,42 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final EditText editTextAddTask = (EditText)findViewById(R.id.editTextAddTask);
+    }
 
-        Button buttonAddTask = (Button)findViewById(R.id.buttonAddTask);
-        buttonAddTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (editTextAddTask.getText().toString().matches("")){
-                    Toast.makeText(getApplicationContext(), "task text NOT entered!", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if(db.insertTask(editTextAddTask.getText().toString())){
-                        populateListView(listViewTask, db.getAllTasks(), getApplicationContext());
-                        Toast.makeText(getApplicationContext(), "added task " + editTextAddTask.getText() + "!", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "task already exists, choose a different name!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_appbar_main, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.appbar_addTask:
+                Intent addTaskIntent = new Intent(MainActivity.this, AddTaskActivity.class);
+                MainActivity.this.startActivityForResult(addTaskIntent, MainActivity.REQUEST_CODE_AddTaskActivity);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
-            case (MainActivity.REQUEST_CODE_EditTaskActivity) : {
+            case (MainActivity.REQUEST_CODE_AddTaskActivity) :
                 if (resultCode == MainActivity.RESULT_OK) {
                     populateListView(listViewTask, db.getAllTasks(), getApplicationContext());
                 }
                 break;
-            }
+            case (MainActivity.REQUEST_CODE_EditTaskActivity) :
+                if (resultCode == MainActivity.RESULT_OK) {
+                    populateListView(listViewTask, db.getAllTasks(), getApplicationContext());
+                }
+                break;
         }
     }
 

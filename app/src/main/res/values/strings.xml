@@ -8,4 +8,16 @@
     <string name="buttonEditSave">save</string>
     <string name="textViewEditTitle">Edit ToDo Task</string>
 
+    <string name="textViewTaskName">NAME</string>
+    <string name="textViewTaskNotes">NOTES</string>
+    <string name="textViewTaskPriority">PRIORITY</string>
+    <string name="textViewTaskDueDate">DUE DATE</string>
+    <string name="textViewTaskStatus">STATUS</string>
+
+    <string name="appBarAddTask">ADD TASK</string>
+    <string name="appBarEditTask">EDIT TASK</string>
+    <string name="appBarSaveTask">SAVE TASK</string>
+    <string name="appBarCloseTask">CLOSE TASK</string>
+    <string name="appBarDeleteTask">DELETE TASK</string>
+
 </resources>
