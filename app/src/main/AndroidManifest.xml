@@ -8,11 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" />
-        <activity android:name=".EditTaskActivity" />
-        <activity
-            android:name=".AddTaskActivity"
-            android:label="@string/appBarAddTask"></activity>
+
         <activity
             android:name=".SplashScreen"
             android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -22,7 +18,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ViewTaskActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".EditTaskActivity"
+            android:label="@string/appBarEditTask" ></activity>
+        <activity
+            android:name=".AddTaskActivity"
+            android:label="@string/appBarAddTask" ></activity>
+        <activity
+            android:name=".ViewTaskActivity"
+            android:label="@string/appBarViewTask"></activity>
     </application>
 
 </manifest>

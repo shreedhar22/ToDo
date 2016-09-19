@@ -44,7 +44,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editTextTaskDescription"
+            android:id="@+id/editTextTaskNotes"
             android:layout_weight="2"
             android:lines="3"/>
 
@@ -62,11 +62,13 @@
             android:text="@string/textViewTaskPriority"
             android:layout_weight="8"/>
 
-        <EditText
+        <Spinner
+            android:id="@+id/spinnerTaskPriority"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editTextTaskPriority"
-            android:layout_weight="2"/>
+            android:layout_weight="2"
+            android:entries="@array/priority_arrays"
+            android:prompt="@string/priority_prompt" />
 
     </LinearLayout>
 
@@ -87,8 +89,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/editTextTaskDueDate"
-            android:layout_weight="2"/>
-
+            android:layout_weight="2"
+            />
 
     </LinearLayout>
 
@@ -104,11 +106,13 @@
             android:text="@string/textViewTaskStatus"
             android:layout_weight="8"/>
 
-        <EditText
+        <Spinner
+            android:id="@+id/spinnerTaskStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editTextTaskStatus"
-            android:layout_weight="2"/>
+            android:layout_weight="2"
+            android:entries="@array/status_arrays"
+            android:prompt="@string/status_prompt" />
 
     </LinearLayout>
 

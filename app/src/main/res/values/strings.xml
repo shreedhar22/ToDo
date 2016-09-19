@@ -15,9 +15,24 @@
     <string name="textViewTaskStatus">STATUS</string>
 
     <string name="appBarAddTask">ADD TASK</string>
+    <string name="appBarViewTask">VIEW TASK</string>
     <string name="appBarEditTask">EDIT TASK</string>
     <string name="appBarSaveTask">SAVE TASK</string>
     <string name="appBarCloseTask">CLOSE TASK</string>
     <string name="appBarDeleteTask">DELETE TASK</string>
+
+    <string name="status_prompt">status</string>
+    <string-array name="status_arrays">
+        <item>Completed</item>
+        <item>In-Progress</item>
+        <item>Pending</item>
+    </string-array>
+
+    <string name="priority_prompt">status</string>
+    <string-array name="priority_arrays">
+        <item>HIGH</item>
+        <item>MEDIUM</item>
+        <item>LOW</item>
+    </string-array>
 
 </resources>

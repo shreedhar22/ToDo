@@ -18,9 +18,15 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    static final int REQUEST_CODE_ViewTaskActivity = 0;
     static final int REQUEST_CODE_AddTaskActivity = 1;
     static final int REQUEST_CODE_EditTaskActivity = 2;
+
     static final String BUNDLE_TASK_NAME = "TASK_NAME";
+    static final String BUNDLE_TASK_NOTES = "TASK_NOTES";
+    static final String BUNDLE_TASK_PRIORITY = "TASK_PRIORITY";
+    static final String BUNDLE_TASK_DUE_DATE = "TASK_DUE_DATE";
+    static final String BUNDLE_TASK_STATUS = "TASK_STATUS";
 
     ListView listViewTask;
     DBHandle db;
@@ -45,10 +51,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String  itemValue = (String) listViewTask.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(), "edit mode for task " +itemValue+ "!" , Toast.LENGTH_SHORT).show();
-                Intent editTaskIntent = new Intent(MainActivity.this, EditTaskActivity.class);
-                editTaskIntent.putExtra(BUNDLE_TASK_NAME, itemValue);
-                MainActivity.this.startActivityForResult(editTaskIntent, MainActivity.REQUEST_CODE_EditTaskActivity);
+                Toast.makeText(getApplicationContext(), "view mode for task " +itemValue+ "!" , Toast.LENGTH_SHORT).show();
+                Intent viewTaskIntent = new Intent(MainActivity.this, ViewTaskActivity.class);
+                viewTaskIntent.putExtra(BUNDLE_TASK_NAME, itemValue);
+                viewTaskIntent.putExtra(BUNDLE_TASK_NOTES, db.getTaskNotes(itemValue));
+                viewTaskIntent.putExtra(BUNDLE_TASK_DUE_DATE, db.getTaskDueDate(itemValue));
+                viewTaskIntent.putExtra(BUNDLE_TASK_PRIORITY, db.getTaskPriority(itemValue));
+                viewTaskIntent.putExtra(BUNDLE_TASK_STATUS, db.getTaskStatus(itemValue));
+                MainActivity.this.startActivityForResult(viewTaskIntent, MainActivity.REQUEST_CODE_EditTaskActivity);
             }
         });
         listViewTask.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -61,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
     }
 
     @Override
@@ -93,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     populateListView(listViewTask, db.getAllTasks(), getApplicationContext());
                 }
                 break;
-            case (MainActivity.REQUEST_CODE_EditTaskActivity) :
+            case (MainActivity.REQUEST_CODE_ViewTaskActivity) :
                 if (resultCode == MainActivity.RESULT_OK) {
                     populateListView(listViewTask, db.getAllTasks(), getApplicationContext());
                 }

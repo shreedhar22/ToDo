@@ -10,10 +10,20 @@
     tools:context="com.sudhishkr.codepath.todo.SplashScreen">
 
     <ImageView
+        android:id="@+id/splashIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/icon"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/splashIcon"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/splashText"
+        android:text="@string/app_name"
+        android:textStyle="bold"
+        android:textSize="50dp"/>
 
 </RelativeLayout>

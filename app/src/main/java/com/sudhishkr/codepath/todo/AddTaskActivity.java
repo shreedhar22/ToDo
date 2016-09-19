@@ -1,5 +1,7 @@
 package com.sudhishkr.codepath.todo;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -7,13 +9,27 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.DatePicker;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class AddTaskActivity extends AppCompatActivity {
 
+    SimpleDateFormat dateFormatter;
     DBHandle db;
     EditText editTextTaskName;
+    EditText editTextTaskNotes;
+    EditText editTextTaskDueDate;
+    Spinner spinnerTaskStatus;
+    Spinner spinnerTaskPriority;
     Boolean checkAddOnTask = Boolean.FALSE;
 
     @Override
@@ -32,6 +48,16 @@ public class AddTaskActivity extends AppCompatActivity {
         db = new DBHandle(this);
 
         editTextTaskName = (EditText) findViewById(R.id.editTextTaskName);
+        editTextTaskNotes = (EditText) findViewById(R.id.editTextTaskNotes);
+        editTextTaskDueDate = (EditText) findViewById(R.id.editTextTaskDueDate);
+
+        spinnerTaskPriority = (Spinner) findViewById(R.id.spinnerTaskPriority);
+        spinnerTaskPriority.setOnItemSelectedListener(new CustomSpinnerOnItemSelectedListener());
+
+        spinnerTaskStatus = (Spinner) findViewById(R.id.spinnerTaskStatus);
+        spinnerTaskStatus.setOnItemSelectedListener(new CustomSpinnerOnItemSelectedListener());
+
+
 
     }
 
@@ -54,7 +80,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "task text NOT entered!", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    if(db.insertTask(editTextTaskName.getText().toString())){
+                    if(db.insertTask(editTextTaskName.getText().toString(), editTextTaskNotes.getText().toString(), spinnerTaskPriority.getSelectedItem().toString(), editTextTaskDueDate.getText().toString(), spinnerTaskStatus.getSelectedItem().toString())){
                         checkAddOnTask = Boolean.TRUE;
                         Toast.makeText(getApplicationContext(), "added task " + editTextTaskName.getText() + "!", Toast.LENGTH_SHORT).show();
                         closeActivity();
