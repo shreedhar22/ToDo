@@ -14,18 +14,18 @@
     <string name="textViewTaskDueDate">DUE DATE</string>
     <string name="textViewTaskStatus">STATUS</string>
 
-    <string name="appBarAddTask">ADD TASK</string>
-    <string name="appBarViewTask">VIEW TASK</string>
-    <string name="appBarEditTask">EDIT TASK</string>
-    <string name="appBarSaveTask">SAVE TASK</string>
-    <string name="appBarCloseTask">CLOSE TASK</string>
-    <string name="appBarDeleteTask">DELETE TASK</string>
+    <string name="appBarAddTask">Add</string>
+    <string name="appBarViewTask">View</string>
+    <string name="appBarEditTask">Edit</string>
+    <string name="appBarSaveTask">Save</string>
+    <string name="appBarCloseTask">Close</string>
+    <string name="appBarDeleteTask">Delete</string>
 
     <string name="status_prompt">status</string>
     <string-array name="status_arrays">
-        <item>Completed</item>
-        <item>In-Progress</item>
         <item>Pending</item>
+        <item>In-Progress</item>
+        <item>Completed</item>
     </string-array>
 
     <string name="priority_prompt">status</string>

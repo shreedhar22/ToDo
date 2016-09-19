@@ -20,13 +20,16 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".EditTaskActivity"
-            android:label="@string/appBarEditTask" ></activity>
+            android:label="@string/appBarEditTask"
+            android:parentActivityName="com.sudhishkr.codepath.todo.ViewTaskActivity"></activity>
         <activity
             android:name=".AddTaskActivity"
-            android:label="@string/appBarAddTask" ></activity>
+            android:label="@string/appBarAddTask"
+            android:parentActivityName="com.sudhishkr.codepath.todo.MainActivity"></activity>
         <activity
             android:name=".ViewTaskActivity"
-            android:label="@string/appBarViewTask"></activity>
+            android:label="@string/appBarViewTask"
+            android:parentActivityName="com.sudhishkr.codepath.todo.MainActivity"></activity>
     </application>
 
 </manifest>

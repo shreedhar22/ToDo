@@ -46,6 +46,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
         editTextTaskName = (EditText) findViewById(R.id.editTextTaskName);
         editTextTaskName.setText(bundle.getString(MainActivity.BUNDLE_TASK_NAME));
+        editTextTaskName.setSelection(editTextTaskName.getText().length());
 
         editTextTaskNotes = (EditText) findViewById(R.id.editTextTaskNotes);
         editTextTaskNotes.setText(db.getTaskNotes(bundle.getString(MainActivity.BUNDLE_TASK_NAME)));
@@ -101,6 +102,6 @@ public class EditTaskActivity extends AppCompatActivity {
         else{
             setResult(ViewTaskActivity.RESULT_CANCELED, resultIntent);
         }
-        finish();
+        this.finish();
     }
 }

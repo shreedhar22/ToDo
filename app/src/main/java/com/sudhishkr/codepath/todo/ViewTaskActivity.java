@@ -25,6 +25,9 @@ public class ViewTaskActivity extends AppCompatActivity {
     Spinner spinnerTaskStatus;
     Spinner spinnerTaskPriority;
 
+    Boolean checkDeleteOnTask = Boolean.FALSE;
+    Boolean checkEditOnTask = Boolean.FALSE;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,16 +49,22 @@ public class ViewTaskActivity extends AppCompatActivity {
         editTextTaskName.setText(bundle.getString(MainActivity.BUNDLE_TASK_NAME));
         editTextTaskName.setCursorVisible(false);
         editTextTaskName.setKeyListener(null);
+        editTextTaskName.setFocusable(false);
+        editTextTaskName.setEnabled(false);
 
         editTextTaskNotes = (EditText) findViewById(R.id.editTextTaskNotes);
-        editTextTaskNotes.setText(bundle.getString(MainActivity.BUNDLE_TASK_NOTES));
+        editTextTaskNotes.setText(db.getTaskNotes(bundle.getString(MainActivity.BUNDLE_TASK_NAME)));
         editTextTaskNotes.setCursorVisible(false);
         editTextTaskNotes.setKeyListener(null);
+        editTextTaskNotes.setFocusable(false);
+        editTextTaskNotes.setEnabled(false);
 
         editTextTaskDueDate = (EditText) findViewById(R.id.editTextTaskDueDate);
-        editTextTaskDueDate.setText(bundle.getString(MainActivity.BUNDLE_TASK_DUE_DATE));
+        editTextTaskDueDate.setText(db.getTaskDueDate(bundle.getString(MainActivity.BUNDLE_TASK_NAME)));
         editTextTaskDueDate.setCursorVisible(false);
         editTextTaskDueDate.setKeyListener(null);
+        editTextTaskDueDate.setFocusable(false);
+        editTextTaskDueDate.setEnabled(false);
 
         spinnerTaskPriority = (Spinner) findViewById(R.id.spinnerTaskPriority);
         //spinnerTaskPriority.setSelection(bundle.getInt(MainActivity.BUNDLE_TASK_PRIORITY));
@@ -82,9 +91,11 @@ public class ViewTaskActivity extends AppCompatActivity {
             case R.id.appbar_editTask:
                 Intent editTaskIntent = new Intent(ViewTaskActivity.this, EditTaskActivity.class);
                 editTaskIntent.putExtra(MainActivity.BUNDLE_TASK_NAME, editTextTaskName.getText().toString());
-                ViewTaskActivity.this.startActivityForResult(editTaskIntent, MainActivity.REQUEST_CODE_ViewTaskActivity);
+                ViewTaskActivity.this.startActivityForResult(editTaskIntent, MainActivity.REQUEST_CODE_EditTaskActivity);
+                //closeActivity();
                 return true;
             case R.id.appbar_deleteTask:
+                checkDeleteOnTask = Boolean.TRUE;
                 db.deleteTask(editTextTaskName.getText().toString());
                 closeActivity();
                 return true;
@@ -102,6 +113,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         switch(requestCode) {
             case (MainActivity.REQUEST_CODE_EditTaskActivity) :
                 if (resultCode == ViewTaskActivity.RESULT_OK) {
+                    checkEditOnTask = Boolean.TRUE;
                     closeActivity();
                 }
                 break;
@@ -116,7 +128,12 @@ public class ViewTaskActivity extends AppCompatActivity {
 
     public void closeActivity(){
         Intent resultIntent = new Intent();
-        setResult(MainActivity.RESULT_OK, resultIntent);
+        if (this.checkDeleteOnTask || this.checkEditOnTask){
+            setResult(MainActivity.RESULT_OK, resultIntent);
+        }
+        else{
+            setResult(MainActivity.RESULT_CANCELED, resultIntent);
+        }
         finish();
     }
 }

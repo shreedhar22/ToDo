@@ -2,6 +2,8 @@ package com.sudhishkr.codepath.todo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,11 +11,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,11 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "view mode for task " +itemValue+ "!" , Toast.LENGTH_SHORT).show();
                 Intent viewTaskIntent = new Intent(MainActivity.this, ViewTaskActivity.class);
                 viewTaskIntent.putExtra(BUNDLE_TASK_NAME, itemValue);
-                viewTaskIntent.putExtra(BUNDLE_TASK_NOTES, db.getTaskNotes(itemValue));
-                viewTaskIntent.putExtra(BUNDLE_TASK_DUE_DATE, db.getTaskDueDate(itemValue));
-                viewTaskIntent.putExtra(BUNDLE_TASK_PRIORITY, db.getTaskPriority(itemValue));
-                viewTaskIntent.putExtra(BUNDLE_TASK_STATUS, db.getTaskStatus(itemValue));
-                MainActivity.this.startActivityForResult(viewTaskIntent, MainActivity.REQUEST_CODE_EditTaskActivity);
+                MainActivity.this.startActivityForResult(viewTaskIntent, MainActivity.REQUEST_CODE_ViewTaskActivity);
             }
         });
         listViewTask.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -107,11 +107,26 @@ public class MainActivity extends AppCompatActivity {
                     populateListView(listViewTask, db.getAllTasks(), getApplicationContext());
                 }
                 break;
+            case (MainActivity.REQUEST_CODE_EditTaskActivity) :
+                if (resultCode == MainActivity.RESULT_OK) {
+                    populateListView(listViewTask, db.getAllTasks(), getApplicationContext());
+                }
+                break;
         }
     }
 
     public static void populateListView(ListView listViewTask, String[] values, Context context){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, android.R.id.text1, values);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, android.R.id.text1, values){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view =super.getView(position, convertView, parent);
+                TextView textViewTaskName = (TextView) view.findViewById(android.R.id.text1);
+                textViewTaskName.setTextColor(Color.YELLOW);
+                textViewTaskName.setTypeface(null, Typeface.BOLD);
+                textViewTaskName.setTextSize(30);
+                return view;
+            }
+        };
         listViewTask.setAdapter(adapter);
     }
 }
