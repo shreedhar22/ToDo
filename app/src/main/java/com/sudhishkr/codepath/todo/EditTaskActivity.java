@@ -1,5 +1,7 @@
 package com.sudhishkr.codepath.todo;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,12 +11,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Arrays;
+import java.util.Calendar;
 
 public class EditTaskActivity extends AppCompatActivity {
 
@@ -28,6 +32,12 @@ public class EditTaskActivity extends AppCompatActivity {
     Spinner spinnerTaskPriority;
 
     Boolean checkEditOnTask = Boolean.FALSE;
+
+    private int year;
+    private int month;
+    private int day;
+    static final int DATE_DIALOG_ID = 0;
+    DatePickerDialog.OnDateSetListener dateSetListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +65,57 @@ public class EditTaskActivity extends AppCompatActivity {
 
         editTextTaskDueDate = (EditText) findViewById(R.id.editTextTaskDueDate);
         editTextTaskDueDate.setText(db.getTaskDueDate(bundle.getString(MainActivity.BUNDLE_TASK_NAME)));
+        editTextTaskDueDate.setCursorVisible(false);
+        editTextTaskDueDate.setKeyListener(null);
+        editTextTaskDueDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog(DATE_DIALOG_ID);
+            }
+        });
+
 
         spinnerTaskPriority = (Spinner) findViewById(R.id.spinnerTaskPriority);
         spinnerTaskPriority.setSelection(Arrays.asList(getResources().getStringArray(R.array.priority_arrays)).indexOf(db.getTaskPriority(bundle.getString(MainActivity.BUNDLE_TASK_NAME))));
 
         spinnerTaskStatus = (Spinner) findViewById(R.id.spinnerTaskStatus);
         spinnerTaskStatus.setSelection(Arrays.asList(getResources().getStringArray(R.array.status_arrays)).indexOf(db.getTaskStatus(bundle.getString(MainActivity.BUNDLE_TASK_NAME))));
+
+        year = Integer.valueOf(db.getTaskDueDate(bundle.getString(MainActivity.BUNDLE_TASK_NAME)).split("-")[2]);
+        month = Integer.valueOf(db.getTaskDueDate(bundle.getString(MainActivity.BUNDLE_TASK_NAME)).split("-")[1]);
+        day = Integer.valueOf(db.getTaskDueDate(bundle.getString(MainActivity.BUNDLE_TASK_NAME)).split("-")[0]);
+
+        updateDisplay();
+
+        dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                EditTaskActivity.this.year = year;
+                month = monthOfYear;
+                day = dayOfMonth;
+                updateDisplay();
+            }
+        };
+
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_DIALOG_ID:
+                return new DatePickerDialog(this,
+                        dateSetListener,
+                        year, month, day);
+        }
+        return null;
+    }
+
+    private void updateDisplay() {
+        this.editTextTaskDueDate.setText(
+                new StringBuilder()
+                        // Month is 0 based so add 1
+                        .append(month + 1).append("-")
+                        .append(day).append("-")
+                        .append(year));
     }
 
     @Override

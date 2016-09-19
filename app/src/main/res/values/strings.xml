@@ -8,11 +8,11 @@
     <string name="buttonEditSave">save</string>
     <string name="textViewEditTitle">Edit ToDo Task</string>
 
-    <string name="textViewTaskName">NAME</string>
-    <string name="textViewTaskNotes">NOTES</string>
-    <string name="textViewTaskPriority">PRIORITY</string>
-    <string name="textViewTaskDueDate">DUE DATE</string>
-    <string name="textViewTaskStatus">STATUS</string>
+    <string name="textViewTaskName">Name</string>
+    <string name="textViewTaskNotes">Notes</string>
+    <string name="textViewTaskPriority">Priority</string>
+    <string name="textViewTaskDueDate">Due Date</string>
+    <string name="textViewTaskStatus">Status</string>
 
     <string name="appBarAddTask">Add</string>
     <string name="appBarViewTask">View</string>

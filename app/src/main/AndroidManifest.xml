@@ -21,7 +21,11 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".EditTaskActivity"
             android:label="@string/appBarEditTask"
-            android:parentActivityName="com.sudhishkr.codepath.todo.ViewTaskActivity"></activity>
+            android:parentActivityName="com.sudhishkr.codepath.todo.ViewTaskActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.sudhishkr.codepath.todo.ViewTaskActivity"/>
+        </activity>
         <activity
             android:name=".AddTaskActivity"
             android:label="@string/appBarAddTask"

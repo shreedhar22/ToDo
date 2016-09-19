@@ -70,10 +70,11 @@ public class ViewTaskActivity extends AppCompatActivity {
 
         spinnerTaskPriority = (Spinner) findViewById(R.id.spinnerTaskPriority);
         spinnerTaskPriority.setSelection(Arrays.asList(getResources().getStringArray(R.array.priority_arrays)).indexOf(db.getTaskPriority(bundle.getString(MainActivity.BUNDLE_TASK_NAME))));
+        spinnerTaskPriority.setEnabled(false);
 
         spinnerTaskStatus = (Spinner) findViewById(R.id.spinnerTaskStatus);
         spinnerTaskStatus.setSelection(Arrays.asList(getResources().getStringArray(R.array.status_arrays)).indexOf(db.getTaskStatus(bundle.getString(MainActivity.BUNDLE_TASK_NAME))));
-
+        spinnerTaskStatus.setEnabled(false);
     }
 
     @Override
