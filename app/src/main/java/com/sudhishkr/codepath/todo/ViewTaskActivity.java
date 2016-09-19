@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Arrays;
+
 public class ViewTaskActivity extends AppCompatActivity {
 
     DBHandle db;
@@ -67,10 +69,10 @@ public class ViewTaskActivity extends AppCompatActivity {
         editTextTaskDueDate.setEnabled(false);
 
         spinnerTaskPriority = (Spinner) findViewById(R.id.spinnerTaskPriority);
-        //spinnerTaskPriority.setSelection(bundle.getInt(MainActivity.BUNDLE_TASK_PRIORITY));
+        spinnerTaskPriority.setSelection(Arrays.asList(getResources().getStringArray(R.array.priority_arrays)).indexOf(db.getTaskPriority(bundle.getString(MainActivity.BUNDLE_TASK_NAME))));
 
         spinnerTaskStatus = (Spinner) findViewById(R.id.spinnerTaskStatus);
-        //spinnerTaskPriority.setSelection(bundle.getInt(MainActivity.BUNDLE_TASK_STATUS));
+        spinnerTaskStatus.setSelection(Arrays.asList(getResources().getStringArray(R.array.status_arrays)).indexOf(db.getTaskStatus(bundle.getString(MainActivity.BUNDLE_TASK_NAME))));
 
     }
 
@@ -92,7 +94,6 @@ public class ViewTaskActivity extends AppCompatActivity {
                 Intent editTaskIntent = new Intent(ViewTaskActivity.this, EditTaskActivity.class);
                 editTaskIntent.putExtra(MainActivity.BUNDLE_TASK_NAME, editTextTaskName.getText().toString());
                 ViewTaskActivity.this.startActivityForResult(editTaskIntent, MainActivity.REQUEST_CODE_EditTaskActivity);
-                //closeActivity();
                 return true;
             case R.id.appbar_deleteTask:
                 checkDeleteOnTask = Boolean.TRUE;

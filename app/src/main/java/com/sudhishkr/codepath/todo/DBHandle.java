@@ -100,19 +100,9 @@ public class DBHandle extends SQLiteOpenHelper {
     }
 
     public boolean updateTask(String oldTask, String newTask, String notes, String priority, String dueDate, String status){
-        if (oldTask.equals(newTask)){
-            return Boolean.FALSE;
-        }
-        else {
-            if (!checkTaskExists(newTask)){
-                deleteTask(oldTask);
-                insertTask(newTask, notes, priority, dueDate, status);
-                return Boolean.TRUE;
-            }
-            else {
-                return Boolean.FALSE;
-            }
-        }
+        deleteTask(oldTask);
+        insertTask(newTask, notes, priority, dueDate, status);
+        return Boolean.TRUE;
     }
 
     public String[] getAllTasks()

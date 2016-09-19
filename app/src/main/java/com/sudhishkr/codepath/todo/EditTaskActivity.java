@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Arrays;
+
 public class EditTaskActivity extends AppCompatActivity {
 
     DBHandle db;
@@ -55,10 +57,10 @@ public class EditTaskActivity extends AppCompatActivity {
         editTextTaskDueDate.setText(db.getTaskDueDate(bundle.getString(MainActivity.BUNDLE_TASK_NAME)));
 
         spinnerTaskPriority = (Spinner) findViewById(R.id.spinnerTaskPriority);
-        //spinnerTaskPriority.setSelection(bundle.getInt(MainActivity.BUNDLE_TASK_PRIORITY));
+        spinnerTaskPriority.setSelection(Arrays.asList(getResources().getStringArray(R.array.priority_arrays)).indexOf(db.getTaskPriority(bundle.getString(MainActivity.BUNDLE_TASK_NAME))));
 
         spinnerTaskStatus = (Spinner) findViewById(R.id.spinnerTaskStatus);
-        //spinnerTaskPriority.setSelection(bundle.getInt(MainActivity.BUNDLE_TASK_STATUS));
+        spinnerTaskStatus.setSelection(Arrays.asList(getResources().getStringArray(R.array.status_arrays)).indexOf(db.getTaskStatus(bundle.getString(MainActivity.BUNDLE_TASK_NAME))));
     }
 
     @Override
