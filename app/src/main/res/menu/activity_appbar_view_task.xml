@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/appbar_editTask"
+        android:icon="@drawable/edittask"
+        android:title="@string/appBarEditTask"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/appbar_deleteTask"
+        android:icon="@drawable/deletetask"
+        android:title="@string/appBarDeleteTask"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/appbar_closeTask"
+        android:icon="@drawable/canceltask"
+        android:title="@string/appBarCloseTask"
+        app:showAsAction="ifRoom"/>
+</menu>

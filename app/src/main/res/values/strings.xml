@@ -8,4 +8,31 @@
     <string name="buttonEditSave">save</string>
     <string name="textViewEditTitle">Edit ToDo Task</string>
 
+    <string name="textViewTaskName">Name</string>
+    <string name="textViewTaskNotes">Notes</string>
+    <string name="textViewTaskPriority">Priority</string>
+    <string name="textViewTaskDueDate">Due Date</string>
+    <string name="textViewTaskStatus">Status</string>
+
+    <string name="appBarAddTask">Add</string>
+    <string name="appBarViewTask">View</string>
+    <string name="appBarEditTask">Edit</string>
+    <string name="appBarSaveTask">Save</string>
+    <string name="appBarCloseTask">Close</string>
+    <string name="appBarDeleteTask">Delete</string>
+
+    <string name="status_prompt">status</string>
+    <string-array name="status_arrays">
+        <item>Pending</item>
+        <item>In-Progress</item>
+        <item>Completed</item>
+    </string-array>
+
+    <string name="priority_prompt">status</string>
+    <string-array name="priority_arrays">
+        <item>HIGH</item>
+        <item>MEDIUM</item>
+        <item>LOW</item>
+    </string-array>
+
 </resources>

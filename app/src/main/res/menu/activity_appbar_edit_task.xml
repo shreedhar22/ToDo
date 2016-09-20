@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/appbar_saveTask"
+        android:icon="@drawable/savetask"
+        android:title="@string/appBarSaveTask"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/appbar_closeTask"
+        android:icon="@drawable/canceltask"
+        android:title="@string/appBarCloseTask"
+        app:showAsAction="ifRoom"/>
+</menu>

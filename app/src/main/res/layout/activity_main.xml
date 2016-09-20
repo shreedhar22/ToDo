@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#454545"
     tools:context="com.sudhishkr.codepath.todo.MainActivity">
 
     <TextView
@@ -22,7 +23,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textViewHeader"
-        android:layout_above="@+id/textViewAddTaskTitle"
         android:id="@+id/linearLayoutShowTask">
 
         <ListView
@@ -30,37 +30,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/listViewShowTask">
         </ListView>
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewAddTaskTitle"
-        android:text="@string/textViewAddTaskTitle"
-        android:gravity="center"
-        android:layout_above="@+id/linearLayoutAddTask"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/linearLayoutAddTask">
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/editTextAddTask"
-            android:layout_weight="9"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/buttonAddTask"
-            android:layout_weight="1"
-            android:id="@+id/buttonAddTask"/>
 
     </LinearLayout>
 

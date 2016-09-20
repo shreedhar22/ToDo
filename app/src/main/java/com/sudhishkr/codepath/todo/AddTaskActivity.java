@@ -10,28 +10,25 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Arrays;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class EditTaskActivity extends AppCompatActivity {
+public class AddTaskActivity extends AppCompatActivity {
 
+    SimpleDateFormat dateFormatter;
     DBHandle db;
-    Bundle bundle;
-
     EditText editTextTaskName;
     EditText editTextTaskNotes;
     EditText editTextTaskDueDate;
     Spinner spinnerTaskStatus;
     Spinner spinnerTaskPriority;
 
-    Boolean checkEditOnTask = Boolean.FALSE;
+    Boolean checkAddOnTask = Boolean.FALSE;
 
     private int year;
     private int month;
@@ -54,17 +51,9 @@ public class EditTaskActivity extends AppCompatActivity {
 
         db = new DBHandle(this);
 
-        bundle = getIntent().getExtras();
-
         editTextTaskName = (EditText) findViewById(R.id.editTextTaskName);
-        editTextTaskName.setText(bundle.getString(MainActivity.BUNDLE_TASK_NAME));
-        editTextTaskName.setSelection(editTextTaskName.getText().length());
-
         editTextTaskNotes = (EditText) findViewById(R.id.editTextTaskNotes);
-        editTextTaskNotes.setText(db.getTaskNotes(bundle.getString(MainActivity.BUNDLE_TASK_NAME)));
-
         editTextTaskDueDate = (EditText) findViewById(R.id.editTextTaskDueDate);
-        editTextTaskDueDate.setText(db.getTaskDueDate(bundle.getString(MainActivity.BUNDLE_TASK_NAME)));
         editTextTaskDueDate.setCursorVisible(false);
         editTextTaskDueDate.setKeyListener(null);
         editTextTaskDueDate.setOnClickListener(new View.OnClickListener() {
@@ -73,27 +62,26 @@ public class EditTaskActivity extends AppCompatActivity {
                 showDialog(DATE_DIALOG_ID);
             }
         });
-
-
         spinnerTaskPriority = (Spinner) findViewById(R.id.spinnerTaskPriority);
-        spinnerTaskPriority.setSelection(Arrays.asList(getResources().getStringArray(R.array.priority_arrays)).indexOf(db.getTaskPriority(bundle.getString(MainActivity.BUNDLE_TASK_NAME))));
+        spinnerTaskPriority.setOnItemSelectedListener(new CustomSpinnerOnItemSelectedListener());
 
         spinnerTaskStatus = (Spinner) findViewById(R.id.spinnerTaskStatus);
-        spinnerTaskStatus.setSelection(Arrays.asList(getResources().getStringArray(R.array.status_arrays)).indexOf(db.getTaskStatus(bundle.getString(MainActivity.BUNDLE_TASK_NAME))));
+        spinnerTaskStatus.setOnItemSelectedListener(new CustomSpinnerOnItemSelectedListener());
 
-        year = Integer.valueOf(db.getTaskDueDate(bundle.getString(MainActivity.BUNDLE_TASK_NAME)).split("-")[2]);
-        month = Integer.valueOf(db.getTaskDueDate(bundle.getString(MainActivity.BUNDLE_TASK_NAME)).split("-")[1]);
-        day = Integer.valueOf(db.getTaskDueDate(bundle.getString(MainActivity.BUNDLE_TASK_NAME)).split("-")[0]);
+        final Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
 
         updateDisplay();
 
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                EditTaskActivity.this.year = year;
-                month = monthOfYear;
-                day = dayOfMonth;
-                updateDisplay();
-            }
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        AddTaskActivity.this.year = year;
+                        month = monthOfYear;
+                        day = dayOfMonth;
+                        updateDisplay();
+                    }
         };
 
     }
@@ -133,9 +121,19 @@ public class EditTaskActivity extends AppCompatActivity {
                 closeActivity();
                 return true;
             case R.id.appbar_saveTask:
-                db.updateTask(bundle.getString(MainActivity.BUNDLE_TASK_NAME), editTextTaskName.getText().toString(), editTextTaskNotes.getText().toString(), spinnerTaskPriority.getSelectedItem().toString(), editTextTaskDueDate.getText().toString(), spinnerTaskStatus.getSelectedItem().toString());
-                checkEditOnTask = Boolean.TRUE;
-                closeActivity();
+                if (editTextTaskName.getText().toString().matches("")){
+                    Toast.makeText(getApplicationContext(), "task text NOT entered!", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    if(db.insertTask(editTextTaskName.getText().toString(), editTextTaskNotes.getText().toString(), spinnerTaskPriority.getSelectedItem().toString(), editTextTaskDueDate.getText().toString(), spinnerTaskStatus.getSelectedItem().toString())){
+                        checkAddOnTask = Boolean.TRUE;
+                        Toast.makeText(getApplicationContext(), "added task " + editTextTaskName.getText() + "!", Toast.LENGTH_SHORT).show();
+                        closeActivity();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "task already exists, choose a different name!", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 return true;
             case R.id.appbar_closeTask:
                 closeActivity();
@@ -153,12 +151,12 @@ public class EditTaskActivity extends AppCompatActivity {
 
     public void closeActivity(){
         Intent resultIntent = new Intent();
-        if (this.checkEditOnTask){
-            setResult(ViewTaskActivity.RESULT_OK, resultIntent);
+        if (this.checkAddOnTask){
+            setResult(MainActivity.RESULT_OK, resultIntent);
         }
         else{
-            setResult(ViewTaskActivity.RESULT_CANCELED, resultIntent);
+            setResult(MainActivity.RESULT_CANCELED, resultIntent);
         }
-        this.finish();
+        finish();
     }
 }

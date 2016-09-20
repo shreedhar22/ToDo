@@ -8,14 +8,32 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+
+        <activity
+            android:name=".SplashScreen"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EditTaskActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".EditTaskActivity"
+            android:label="@string/appBarEditTask"
+            android:parentActivityName="com.sudhishkr.codepath.todo.ViewTaskActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.sudhishkr.codepath.todo.ViewTaskActivity"/>
+        </activity>
+        <activity
+            android:name=".AddTaskActivity"
+            android:label="@string/appBarAddTask"
+            android:parentActivityName="com.sudhishkr.codepath.todo.MainActivity"></activity>
+        <activity
+            android:name=".ViewTaskActivity"
+            android:label="@string/appBarViewTask"
+            android:parentActivityName="com.sudhishkr.codepath.todo.MainActivity"></activity>
     </application>
 
 </manifest>

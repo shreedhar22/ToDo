@@ -13,6 +13,10 @@ public class DBHandle extends SQLiteOpenHelper {
     public static final String TASK_TABLE = "tasktable";
     public static final String TASK_TABLE_COLUMN_ID = "id";
     public static final String TASK_TABLE_COLUMN_TASK = "task";
+    public static final String TASK_TABLE_COLUMN_NOTES = "notes";
+    public static final String TASK_TABLE_COLUMN_PRIORITY = "priority";
+    public static final String TASK_TABLE_COLUMN_DUE_DATE = "duedate";
+    public static final String TASK_TABLE_COLUMN_STATUS = "status";
 
     public DBHandle(Context context)
     {
@@ -21,7 +25,7 @@ public class DBHandle extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table "+TASK_TABLE+" ("+TASK_TABLE_COLUMN_ID+" integer primary key, "+TASK_TABLE_COLUMN_TASK+" text)");
+        db.execSQL("create table "+TASK_TABLE+" ("+TASK_TABLE_COLUMN_ID+" integer primary key, "+TASK_TABLE_COLUMN_TASK+" text, "+TASK_TABLE_COLUMN_NOTES+" text, " +TASK_TABLE_COLUMN_PRIORITY+" text, " +TASK_TABLE_COLUMN_DUE_DATE+" text, " +TASK_TABLE_COLUMN_STATUS+" text)");
     }
 
     @Override
@@ -30,11 +34,15 @@ public class DBHandle extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertTask(String task) {
+    public boolean insertTask(String task, String notes, String priority, String dueDate, String status) {
         if (!checkTaskExists(task)) {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(TASK_TABLE_COLUMN_TASK, task);
+            contentValues.put(TASK_TABLE_COLUMN_NOTES, notes);
+            contentValues.put(TASK_TABLE_COLUMN_PRIORITY, priority);
+            contentValues.put(TASK_TABLE_COLUMN_DUE_DATE, dueDate);
+            contentValues.put(TASK_TABLE_COLUMN_STATUS, status);
             db.insert(TASK_TABLE, null, contentValues);
             return true;
         }
@@ -58,25 +66,43 @@ public class DBHandle extends SQLiteOpenHelper {
         return res.getInt(res.getColumnIndex(TASK_TABLE_COLUMN_ID));
     }
 
+    public String getTaskNotes(String task){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from "+ TASK_TABLE +" where "+ TASK_TABLE_COLUMN_TASK +" = '"+task+"'", null );
+        res.moveToFirst();
+        return res.getString(res.getColumnIndex(TASK_TABLE_COLUMN_NOTES));
+    }
+
+    public String getTaskPriority(String task){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from "+ TASK_TABLE +" where "+ TASK_TABLE_COLUMN_TASK +" = '"+task+"'", null );
+        res.moveToFirst();
+        return res.getString(res.getColumnIndex(TASK_TABLE_COLUMN_PRIORITY));
+    }
+
+    public String getTaskDueDate(String task){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from "+ TASK_TABLE +" where "+ TASK_TABLE_COLUMN_TASK +" = '"+task+"'", null );
+        res.moveToFirst();
+        return res.getString(res.getColumnIndex(TASK_TABLE_COLUMN_DUE_DATE));
+    }
+
+    public String getTaskStatus(String task){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from "+ TASK_TABLE +" where "+ TASK_TABLE_COLUMN_TASK +" = '"+task+"'", null );
+        res.moveToFirst();
+        return res.getString(res.getColumnIndex(TASK_TABLE_COLUMN_STATUS));
+    }
+
     public Integer deleteTask (String task) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TASK_TABLE, TASK_TABLE_COLUMN_ID +" = ? ", new String[] { Integer.toString(getTaskId(task)) });
     }
 
-    public boolean updateTask(String oldTask, String newTask){
-        if (oldTask.equals(newTask)){
-            return Boolean.FALSE;
-        }
-        else {
-            if (!checkTaskExists(newTask)){
-                deleteTask(oldTask);
-                insertTask(newTask);
-                return Boolean.TRUE;
-            }
-            else {
-                return Boolean.FALSE;
-            }
-        }
+    public boolean updateTask(String oldTask, String newTask, String notes, String priority, String dueDate, String status){
+        deleteTask(oldTask);
+        insertTask(newTask, notes, priority, dueDate, status);
+        return Boolean.TRUE;
     }
 
     public String[] getAllTasks()

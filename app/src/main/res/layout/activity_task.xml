@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#454545"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:background="#787878"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewTaskName"
+            android:text="@string/textViewTaskName"
+            android:textStyle="bold"
+            android:textColor="#FFFF00"
+            android:textSize="20sp"
+            android:layout_weight="6"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextTaskName"
+            android:textColor="#FFFFFF"
+            android:layout_weight="4"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:background="#787878"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewTaskNotes"
+            android:text="@string/textViewTaskNotes"
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#FFFF00"
+            android:layout_weight="6"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextTaskNotes"
+            android:textColor="#FFFFFF"
+            android:layout_weight="4"
+            android:lines="8"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:background="#787878"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewTaskPriority"
+            android:textStyle="bold"
+            android:textColor="#FFFF00"
+            android:textSize="20sp"
+            android:text="@string/textViewTaskPriority"
+            android:layout_weight="6"/>
+
+        <Spinner
+            android:id="@+id/spinnerTaskPriority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:entries="@array/priority_arrays"
+            android:textColor="#FFFFFF"
+            android:prompt="@string/priority_prompt" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:background="#787878"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:id="@+id/textViewTaskDueDate"
+            android:textStyle="bold"
+            android:textColor="#FFFF00"
+            android:text="@string/textViewTaskDueDate"
+            android:layout_weight="6"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextTaskDueDate"
+            android:textColor="#FFFFFF"
+            android:layout_weight="4"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:background="#787878"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:id="@+id/textViewTaskStatus"
+            android:textStyle="bold"
+            android:textColor="#FFFF00"
+            android:text="@string/textViewTaskStatus"
+            android:layout_weight="6"/>
+
+        <Spinner
+            android:id="@+id/spinnerTaskStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:layout_weight="4"
+            android:entries="@array/status_arrays"
+            android:prompt="@string/status_prompt" />
+
+    </LinearLayout>
+
+</LinearLayout>

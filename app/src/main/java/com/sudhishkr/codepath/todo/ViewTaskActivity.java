@@ -1,7 +1,6 @@
 package com.sudhishkr.codepath.todo;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,17 +9,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Arrays;
-import java.util.Calendar;
 
-public class EditTaskActivity extends AppCompatActivity {
+public class ViewTaskActivity extends AppCompatActivity {
 
     DBHandle db;
     Bundle bundle;
@@ -31,13 +27,8 @@ public class EditTaskActivity extends AppCompatActivity {
     Spinner spinnerTaskStatus;
     Spinner spinnerTaskPriority;
 
+    Boolean checkDeleteOnTask = Boolean.FALSE;
     Boolean checkEditOnTask = Boolean.FALSE;
-
-    private int year;
-    private int month;
-    private int day;
-    static final int DATE_DIALOG_ID = 0;
-    DatePickerDialog.OnDateSetListener dateSetListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,70 +49,38 @@ public class EditTaskActivity extends AppCompatActivity {
 
         editTextTaskName = (EditText) findViewById(R.id.editTextTaskName);
         editTextTaskName.setText(bundle.getString(MainActivity.BUNDLE_TASK_NAME));
-        editTextTaskName.setSelection(editTextTaskName.getText().length());
+        editTextTaskName.setCursorVisible(false);
+        editTextTaskName.setKeyListener(null);
+        editTextTaskName.setFocusable(false);
+        editTextTaskName.setEnabled(false);
 
         editTextTaskNotes = (EditText) findViewById(R.id.editTextTaskNotes);
         editTextTaskNotes.setText(db.getTaskNotes(bundle.getString(MainActivity.BUNDLE_TASK_NAME)));
+        editTextTaskNotes.setCursorVisible(false);
+        editTextTaskNotes.setKeyListener(null);
+        editTextTaskNotes.setFocusable(false);
+        editTextTaskNotes.setEnabled(false);
 
         editTextTaskDueDate = (EditText) findViewById(R.id.editTextTaskDueDate);
         editTextTaskDueDate.setText(db.getTaskDueDate(bundle.getString(MainActivity.BUNDLE_TASK_NAME)));
         editTextTaskDueDate.setCursorVisible(false);
         editTextTaskDueDate.setKeyListener(null);
-        editTextTaskDueDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDialog(DATE_DIALOG_ID);
-            }
-        });
-
+        editTextTaskDueDate.setFocusable(false);
+        editTextTaskDueDate.setEnabled(false);
 
         spinnerTaskPriority = (Spinner) findViewById(R.id.spinnerTaskPriority);
         spinnerTaskPriority.setSelection(Arrays.asList(getResources().getStringArray(R.array.priority_arrays)).indexOf(db.getTaskPriority(bundle.getString(MainActivity.BUNDLE_TASK_NAME))));
+        spinnerTaskPriority.setEnabled(false);
 
         spinnerTaskStatus = (Spinner) findViewById(R.id.spinnerTaskStatus);
         spinnerTaskStatus.setSelection(Arrays.asList(getResources().getStringArray(R.array.status_arrays)).indexOf(db.getTaskStatus(bundle.getString(MainActivity.BUNDLE_TASK_NAME))));
-
-        year = Integer.valueOf(db.getTaskDueDate(bundle.getString(MainActivity.BUNDLE_TASK_NAME)).split("-")[2]);
-        month = Integer.valueOf(db.getTaskDueDate(bundle.getString(MainActivity.BUNDLE_TASK_NAME)).split("-")[1]);
-        day = Integer.valueOf(db.getTaskDueDate(bundle.getString(MainActivity.BUNDLE_TASK_NAME)).split("-")[0]);
-
-        updateDisplay();
-
-        dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                EditTaskActivity.this.year = year;
-                month = monthOfYear;
-                day = dayOfMonth;
-                updateDisplay();
-            }
-        };
-
-    }
-
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-            case DATE_DIALOG_ID:
-                return new DatePickerDialog(this,
-                        dateSetListener,
-                        year, month, day);
-        }
-        return null;
-    }
-
-    private void updateDisplay() {
-        this.editTextTaskDueDate.setText(
-                new StringBuilder()
-                        // Month is 0 based so add 1
-                        .append(month + 1).append("-")
-                        .append(day).append("-")
-                        .append(year));
+        spinnerTaskStatus.setEnabled(false);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_appbar_add_task, menu);
+        inflater.inflate(R.menu.activity_appbar_view_task, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -132,9 +91,14 @@ public class EditTaskActivity extends AppCompatActivity {
             case R.id.home:
                 closeActivity();
                 return true;
-            case R.id.appbar_saveTask:
-                db.updateTask(bundle.getString(MainActivity.BUNDLE_TASK_NAME), editTextTaskName.getText().toString(), editTextTaskNotes.getText().toString(), spinnerTaskPriority.getSelectedItem().toString(), editTextTaskDueDate.getText().toString(), spinnerTaskStatus.getSelectedItem().toString());
-                checkEditOnTask = Boolean.TRUE;
+            case R.id.appbar_editTask:
+                Intent editTaskIntent = new Intent(ViewTaskActivity.this, EditTaskActivity.class);
+                editTaskIntent.putExtra(MainActivity.BUNDLE_TASK_NAME, editTextTaskName.getText().toString());
+                ViewTaskActivity.this.startActivityForResult(editTaskIntent, MainActivity.REQUEST_CODE_EditTaskActivity);
+                return true;
+            case R.id.appbar_deleteTask:
+                checkDeleteOnTask = Boolean.TRUE;
+                db.deleteTask(editTextTaskName.getText().toString());
                 closeActivity();
                 return true;
             case R.id.appbar_closeTask:
@@ -146,6 +110,19 @@ public class EditTaskActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (MainActivity.REQUEST_CODE_EditTaskActivity) :
+                if (resultCode == ViewTaskActivity.RESULT_OK) {
+                    checkEditOnTask = Boolean.TRUE;
+                    closeActivity();
+                }
+                break;
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         closeActivity();
@@ -153,12 +130,12 @@ public class EditTaskActivity extends AppCompatActivity {
 
     public void closeActivity(){
         Intent resultIntent = new Intent();
-        if (this.checkEditOnTask){
-            setResult(ViewTaskActivity.RESULT_OK, resultIntent);
+        if (this.checkDeleteOnTask || this.checkEditOnTask){
+            setResult(MainActivity.RESULT_OK, resultIntent);
         }
         else{
-            setResult(ViewTaskActivity.RESULT_CANCELED, resultIntent);
+            setResult(MainActivity.RESULT_CANCELED, resultIntent);
         }
-        this.finish();
+        finish();
     }
 }
