@@ -50,27 +50,8 @@ public class MainActivity extends AppCompatActivity {
         db = new DBHandle(this);
 
         listViewTask = (ListView) findViewById(R.id.listViewShowTask);
-        populateListView(listViewTask, db.getAllTasks(), getApplicationContext());
-        listViewTask.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String  itemValue = (String) listViewTask.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(), "view mode for task " +itemValue+ "!" , Toast.LENGTH_SHORT).show();
-                Intent viewTaskIntent = new Intent(MainActivity.this, ViewTaskActivity.class);
-                viewTaskIntent.putExtra(BUNDLE_TASK_NAME, itemValue);
-                MainActivity.this.startActivityForResult(viewTaskIntent, MainActivity.REQUEST_CODE_ViewTaskActivity);
-            }
-        });
-        listViewTask.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String  itemValue = (String) listViewTask.getItemAtPosition(position);
-                db.deleteTask(itemValue);
-                Toast.makeText(getApplicationContext(), "deleted task " + itemValue + "!" , Toast.LENGTH_SHORT).show();
-                populateListView(listViewTask, db.getAllTasks(), getApplicationContext());
-                return true;
-            }
-        });
+        listViewTask.setAdapter(new CustomListViewAdapter(this, db));
+
     }
 
     @Override
@@ -99,34 +80,19 @@ public class MainActivity extends AppCompatActivity {
         switch(requestCode) {
             case (MainActivity.REQUEST_CODE_AddTaskActivity) :
                 if (resultCode == MainActivity.RESULT_OK) {
-                    populateListView(listViewTask, db.getAllTasks(), getApplicationContext());
+                    listViewTask.setAdapter(new CustomListViewAdapter(this, db));
                 }
                 break;
             case (MainActivity.REQUEST_CODE_ViewTaskActivity) :
                 if (resultCode == MainActivity.RESULT_OK) {
-                    populateListView(listViewTask, db.getAllTasks(), getApplicationContext());
+                    listViewTask.setAdapter(new CustomListViewAdapter(this, db));
                 }
                 break;
             case (MainActivity.REQUEST_CODE_EditTaskActivity) :
                 if (resultCode == MainActivity.RESULT_OK) {
-                    populateListView(listViewTask, db.getAllTasks(), getApplicationContext());
+                    listViewTask.setAdapter(new CustomListViewAdapter(this, db));
                 }
                 break;
         }
-    }
-
-    public static void populateListView(ListView listViewTask, String[] values, Context context){
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, android.R.id.text1, values){
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view =super.getView(position, convertView, parent);
-                TextView textViewTaskName = (TextView) view.findViewById(android.R.id.text1);
-                textViewTaskName.setTextColor(Color.YELLOW);
-                textViewTaskName.setTypeface(null, Typeface.BOLD);
-                textViewTaskName.setTextSize(30);
-                return view;
-            }
-        };
-        listViewTask.setAdapter(adapter);
     }
 }

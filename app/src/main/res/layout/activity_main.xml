@@ -16,6 +16,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/textViewHeader"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:textSize="10dp"
         android:id="@+id/textViewHeader"/>
 
     <LinearLayout
@@ -23,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textViewHeader"
+        android:paddingTop="20dp"
         android:id="@+id/linearLayoutShowTask">
 
         <ListView
